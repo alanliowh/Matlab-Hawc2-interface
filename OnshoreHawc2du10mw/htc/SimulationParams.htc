@@ -1,0 +1,11 @@
+time_stop  2.0003e+02 ; 
+solvertype   1 ;    (newmark)  
+on_no_convergence continue ; 
+ convergence_limits 5E3 1.0 1.e-8 ;       
+ logfile ./log/OnshoreHawc2du10mw.log ;  
+ animation ./anim/OnshoreHawc2du10mw.dat;   
+; 
+begin NEWMARK ; 
+  deltat    2.5000e-02 ; 
+end NEWMARK ; 
+exit ; 

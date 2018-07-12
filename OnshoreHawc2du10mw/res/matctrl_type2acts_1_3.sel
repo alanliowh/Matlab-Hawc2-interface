@@ -1,0 +1,48 @@
+________________________________________________________________________________________________________________________
+  Version ID : HAWC2MB 12.5
+                                                            Time : 15:19:02
+                                                            Date : 13:11.2017
+________________________________________________________________________________________________________________________
+  Result file : ./res/matctrl_type2acts_1_3.dat
+________________________________________________________________________________________________________________________
+   Scans    Channels    Time [sec]        Format
+      20000      35          500.000       ASCII
+
+  Channel   Variable Description               
+
+      1      Time                           s          Time
+      2      bea1 angle                     deg        shaft_rot angle
+      3      bea1 angle_speed               rpm        shaft_rot angle speed
+      4      bea2 angle                     deg        pitch1 angle
+      5      bea2 angle_speed               deg/s      pitch1 angle speed
+      6      bea2 angle                     deg        pitch2 angle
+      7      bea2 angle_speed               deg/s      pitch2 angle speed
+      8      bea2 angle                     deg        pitch3 angle
+      9      bea2 angle_speed               deg/s      pitch3 angle speed
+     10       Omega                         rad/s       Rotor speed
+     11      Ae rot. torque                 kNm        Aero rotor torque
+     12      Ae rot. power                  kW         Aero rotor power
+     13      Ae rot. thrust                 kN         Aero rotor thrust
+     14      State acc x  coo: global       m/s^2      State acc x  Mbdy:towertop E-nr:   1 Z-rel:1.00 coo: global
+     15      State acc y  coo: global       m/s^2      State acc y  Mbdy:towertop E-nr:   1 Z-rel:1.00 coo: global
+     16      WSP gl. coo.,Vx                m/s        Free wind speed Vx, gl. coo, of gl. pos    0.00,   0.00,-119.00
+     17      WSP gl. coo.,Vy                m/s        Free wind speed Vy, gl. coo, of gl. pos    0.00,   0.00,-119.00
+     18      WSP gl. coo.,Vz                m/s        Free wind speed Vz, gl. coo, of gl. pos    0.00,   0.00,-119.00
+     19      axisangle an coo: global       -          State_rot axisangle an Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     20      axisangle r1 coo: global       -          State_rot axisangle r1 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     21      axisangle r2 coo: global       -          State_rot axisangle r2 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     22      axisangle r3 coo: global       -          State_rot axisangle r3 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     23      eulerp r0 coo: global          -          State_rot eulerp r0 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     24      eulerp r1 coo: global          -          State_rot eulerp r1 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     25      eulerp r2 coo: global          -          State_rot eulerp r2 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     26      eulerp r3 coo: global          -          State_rot eulerp r3 Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     27      eulerang_xyz tx coo: global    deg        State_rot eulerang_xyz tx Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     28      eulerang_xyz ty coo: global    deg        State_rot eulerang_xyz ty Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     29      eulerang_xyz tz coo: global    deg        State_rot eulerang_xyz tz Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     30      proj_ang tx coo: global        deg        State_rot proj_ang tx Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     31      proj_ang ty coo: global        deg        State_rot proj_ang ty Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     32      proj_ang tz coo: global        deg        State_rot proj_ang tz Mbdy:tower E-nr:   1 Z-rel:1.00 coo: global
+     33      DLL inp  2:  1                 -          generator_servo inpvec  1  mgen lss [nm]
+     34      DLL inp  2:  2                 -          generator_servo inpvec  2  pelec w
+     35      DLL inp  2:  3                 -          generator_servo inpvec  3  mframe
+________________________________________________________________________________________________________________________
