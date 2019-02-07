@@ -11,8 +11,7 @@ Installation
 
 This repository is written for Windows.
 
-[HAWC2 ](http://www.hawc2.dk/) should be installed and the executable HAWC2mb.exe
-should either be in the "DTU_10_MW_Reference_Wind_Turbine_v9-1" directory. The HAWC2mb.exe file and DTU10MW should be checked and updated from time to time. 
+[HAWC2 ](http://www.hawc2.dk/) should be installed and the executable HAWC2mb.exe should be in the directory of "DTU_10_MW_Reference_Wind_Turbine_v9-1". The HAWC2mb.exe file and DTU10MW should be checked and updated from time to time. 
 
 To install this package, clone the repository and pip install:
 
@@ -30,3 +29,8 @@ To begin, go into the "matlab" directory.
 Run "Main.m"
 
 If you want to change the controller, go to "HAWC2matlabScript.m", where you can place your own controller instead of the default PID controller.
+
+
+Contact
+=====
+Feel free to contact me if you encounter any problem regarding this interface at wali@dtu.dk.
