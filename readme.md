@@ -13,14 +13,16 @@ This repository is written for Windows.
 
 [HAWC2 ](http://www.hawc2.dk/) should be installed and the executable HAWC2mb.exe should be in the directory of "DTU_10_MW_Reference_Wind_Turbine_v9-1". The HAWC2mb.exe file and DTU10MW should be checked and updated from time to time. 
 
-To install this package, clone the repository and pip install:
+
+To install this package, just simply download it and unzip it or you can use clone the repository and pip install as follows:
 
 ```
 git clone https://github.com/alanliowh/Matlab-Hawc2-interface.git
 cd Matlab-Hawc2-interface
 pip install .
 ```
-Or just simply, download it and unzip it.
+
+
 Example
 =======
 
