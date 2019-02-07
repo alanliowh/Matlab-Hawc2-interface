@@ -20,7 +20,7 @@ git clone https://github.com/alanliowh/Matlab-Hawc2-interface.git
 cd Matlab-Hawc2-interface
 pip install .
 ```
-
+Or just simply, download it and unzip it.
 Example
 =======
 
