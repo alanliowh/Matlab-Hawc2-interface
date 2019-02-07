@@ -1,0 +1,1 @@
+"C:\Users\wali\OneDrive - Danmarks Tekniske Universitet\Matlab - HAWC2\HAWC2_exe\HAWC2MB.exe" "C:\Users\wali\OneDrive - Danmarks Tekniske Universitet\Matlab - HAWC2\[new] Turbulence-based control\DTU_10_MW_Reference_Wind_Turbine_v_9-1\htc\DTU_10MW_RWT_v16_t18_s10234.htc"

@@ -1,0 +1,201 @@
+________________________________________________________________________________________________________________________
+  Version ID : HAWC2MB 12.6
+  Log file output
+                                                            Time : 11:00:13
+                                                            Date : 21:01.2019
+________________________________________________________________________________________________________________________
+ Newmark commands read with succes
+ Simulation commands read with succes
+ Reading data of main body : tower
+ Succes opening ./data/dtu_10mw_rwt_tower_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body tower commands read with succes
+ Reading data of main body : towertop
+ Succes opening ./data/dtu_10mw_rwt_towertop_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body towertop commands read with succes
+ Reading data of main body : shaft
+ Succes opening ./data/dtu_10mw_rwt_shaft_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body shaft commands read with succes
+ Reading data of main body : hub1
+ Succes opening ./data/dtu_10mw_rwt_hub_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body hub1 commands read with succes
+ Reading data of main body : hub2
+ Topologi main body hub2 commands read with succes
+ Reading data of main body : hub3
+ Topologi main body hub3 commands read with succes
+ Reading data of main body : blade1
+ Succes opening ./data/dtu_10mw_rwt_blade_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body blade1 commands read with succes
+ Reading data of main body : blade2
+ Topologi main body blade2 commands read with succes
+ Reading data of main body : blade3
+ Topologi main body blade3 commands read with succes
+ Base orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ Orientation input commands read with succes
+ Fix0 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ Bearing1 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ bearing2 constraint input commands read with succes
+ bearing2 constraint input commands read with succes
+ bearing2 constraint input commands read with succes
+ constraint input commands read with succes
+ Topologi commands read with succes
+ *** WARNING *** In mann module: Std scaling applied - other scalings bypassed
+ *** WARNING *** Instead of using std scaling, consider the right gamma factor i
+ n mann turb
+ Mann commands read with succes
+ Tower shadow (potential2 flow) commands read with succes
+ Wind commands read with succes
+ aerodrag element commands read with succes
+ aerodrag element commands read with succes
+ Aerodrag commands read with succes
+ Aerodynamic commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll input commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Dll type2 input commands read with succes
+ DLL commands read with succes
+ output commands read with succes
+ Output commands read
+ Initialization of structure
+ Initializing of aero rotor...
+ Initialization of rotor aerodynamics
+ Succes opening ./data/dtu_10mw_rwt_ae.dat
+ Succes opening ./data/dtu_10mw_rwt_pc.dat
+ Initialization of rotor induction
+ Initialization of wind
+ Initialization of Mann turbulence
+ Opening turbulence file ./turb/turb_dtu_10mw_rwt_s508_u.bin
+ Turbulence file ./turb/turb_dtu_10mw_rwt_s508_u.bin does not exist
+ Turbulence generation starts ...
+ Turbulence generation finished, output starts ...
+ Mann turb. box shorter than required - turbulence is reused after every    412.55 seconds
+ In Mann module:
+ Scale factor u=  0.736126457236172     
+ Scale factor v=  0.723548244739780     
+ Scale factor w=  0.710238327435580     
+ Initialization of external DLLs
+ External DLL ./tcpip/tcpserver.dll is attempted to open
+ Succes opening external DLL ./tcpip/tcpserver.dll
+ *** ERROR *** The DLL subroutine tcplink_dela_init
+  could not be found - not used
+ *** INFO *** The DLL subroutine tcplink_dela_message
+  could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/generator_servo.dll is attempted to open
+ Succes opening external DLL ./control/generator_servo.dll
+ DLL subroutine init init_generator_servo is called
+ In initialization call of ./control/generator_servo.dll Output is 
+  0.000000000000000E+000
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/mech_brake.dll is attempted to open
+ Succes opening external DLL ./control/mech_brake.dll
+ DLL subroutine init init_mech_brake is called
+ In initialization call of ./control/mech_brake.dll Output is 
+  0.000000000000000E+000
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/servo_with_limits.dll is attempted to open
+ Succes opening external DLL ./control/servo_with_limits.dll
+ DLL subroutine init init_servo_with_limits is called
+ In initialization call of ./control/servo_with_limits.dll Output is 
+  0.000000000000000E+000
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/towerclearance_mblade.dll is attempted to open
+ Succes opening external DLL ./control/towerclearance_mblade.dll
+ DLL subroutine init initialize is called
+ In initialization call of ./control/towerclearance_mblade.dll Output is 
+  0.000000000000000E+000
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Creating link between structure and aerodynamics
+ *** WARNING *** First node of body blade1_1 is not located in body origin.
+ *** WARNING *** First node of body blade2_1 is not located in body origin.
+ *** WARNING *** First node of body blade3_1 is not located in body origin.
+ Creating link between structure and aerodrag
+ Initialization of Aerodrag
+ Starting simulation
+ In mann turb - reading new buffer, posM(1)=  -6.613992    
+Dynamic stall method:  2 used for entire rotor
+ Global time =   1.000000000000000E-002 Iter =            1
+ Global time =   2.000000000000000E-002 Iter =            1
+ Global time =   3.000000000000000E-002 Iter =            1
+ Global time =   4.000000000000000E-002 Iter =            1
+ Global time =   5.000000000000000E-002 Iter =            1
+ Global time =   6.000000000000000E-002 Iter =            1
+ Global time =   7.000000000000001E-002 Iter =            2
+ Global time =   8.000000000000000E-002 Iter =            2
+ Global time =   9.000000000000000E-002 Iter =            2
+ Global time =   0.100000000000000      Iter =            2
+ Global time =   0.110000000000000      Iter =            2
+ Global time =   0.120000000000000      Iter =            2
+ Global time =   0.130000000000000      Iter =            2
+ Global time =   0.140000000000000      Iter =            2
+ Global time =   0.150000000000000      Iter =            2
+ Global time =   0.160000000000000      Iter =            2
+ Global time =   0.170000000000000      Iter =            2
+ Global time =   0.180000000000000      Iter =            2
+ Global time =   0.190000000000000      Iter =            2
+ Global time =   0.200000000000000      Iter =            2
+ Global time =   0.210000000000000      Iter =            2
+ Global time =   0.220000000000000      Iter =            2
+ Global time =   0.230000000000000      Iter =            2
+ Global time =   0.240000000000000      Iter =            2
+ Global time =   0.250000000000000      Iter =            2
+ Global time =   0.260000000000000      Iter =            2
+ Global time =   0.270000000000000      Iter =            2
+ Global time =   0.280000000000000      Iter =            2
+ Global time =   0.290000000000000      Iter =            2
+ Global time =   0.300000000000000      Iter =            2
+ Global time =   0.310000000000000      Iter =            2
+ Global time =   0.320000000000000      Iter =            2
+ Global time =   0.330000000000000      Iter =            1
+ Global time =   0.340000000000000      Iter =            2
+ Global time =   0.350000000000000      Iter =            2
+ Global time =   0.360000000000000      Iter =            2
+ Global time =   0.370000000000000      Iter =            2
+ Global time =   0.380000000000000      Iter =            2
+ Global time =   0.390000000000000      Iter =            2
+ Global time =   0.400000000000000      Iter =            2
+ Global time =   0.410000000000000      Iter =            2
+ Global time =   0.420000000000000      Iter =            2
+ Global time =   0.430000000000000      Iter =            2
+ Global time =   0.440000000000000      Iter =            2
+ Global time =   0.450000000000000      Iter =            2
+ Global time =   0.460000000000000      Iter =            2

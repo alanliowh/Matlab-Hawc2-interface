@@ -1,0 +1,77 @@
+
+================================================================================
+HAWCStab2 Terminology used in "controller_input.txt" and corresponding
+HAWC2 input in the controller section of the Basic DTU Wind Energy Controller
+================================================================================
+
+--------------------------------------------------------------------------------
+controller_input.txt
+--------------------------------------------------------------------------------
+PI generator torque controller in region 1 (variable speed, variable power), starting at istate = 3
+K =   [pi_gen_reg1.K] [Nm/(rad/s)^2]
+PI generator torque controller in region 2 (constant speed, variable power)
+I =   0.307683E+08 [kg*m^2]
+Kp =   [pi_gen_reg2.Kp] [Nm/(rad/s)]
+Ki =   [pi_gen_reg2.Ki] [Nm/rad]
+PI pitch angle controller in region 3 (constant speed, constant power)
+Kp =   [pi_pitch_reg3.Kp] [rad/(rad/s)]
+Ki =   [pi_pitch_reg3.Ki] [rad/rad]
+K1 =        [pi_pitch_reg3.K1] [deg], K2 =     [pi_pitch_reg3.K2] [deg^2] (dq/dtheta =     -176.48944 kNm/deg)
+Additional terms due to the Aerodynamic damping
+Kp2 =   0.240394E-01 [rad/(rad/s)]
+Ko1 =       -1.69769 [deg], Ko2 =      -15.02688 [deg^2] (dq/domega =      243.08924 kNm/(rad/s))
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+dll controller block in htc file
+--------------------------------------------------------------------------------
+; ==== Partial load control parameters
+      constant  11   [pi_gen_reg1.K]  ; Optimal Cp tracking K factor [kNm/(rad/s)^2], ;
+                                  ; Qg=K*Omega^2, K=eta*0.5*rho*A*Cp_opt*R^3/lambda_opt^3
+      constant  12   [pi_gen_reg2.Kp] ; Proportional gain of torque controller [Nm/(rad/s)]
+      constant  13   [pi_gen_reg2.Ki] ; Integral gain of torque controller [Nm/rad]
+      constant  14   0.0              ; Differential gain of torque controller [Nm/(rad/s^2)]
+; ==== Full load control parameters
+      constant  15   1      ; Generator control switch [1=constant power, 2=constant torque]
+      constant  16   [pi_pitch_reg3.Kp] ; Proportional gain of pitch controller [rad/(rad/s)]
+      constant  17   [pi_pitch_reg3.Ki] ; Integral gain of pitch controller [rad/rad]
+      constant  18   0.0    ; Differential gain of pitch controller [rad/(rad/s^2)]
+      constant  19   0.4e-8 ; Proportional power error gain [rad/W] (DTU10MW=0.4e-8)
+      constant  20   0.4e-8 ; Integral power error gain [rad/(Ws)] (DTU10MW=0.4e-8)
+      constant  21   [pi_pitch_reg3.K1] ; Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg]
+      constant  22   [pi_pitch_reg3.K2] ; (zero for linear tuning) Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
+                                        ; (if zero, KK1 = pitch angle at double gain)
+      constant  23   10.3    ; Relative speed for double nonlinear gain [-]
+--------------------------------------------------------------------------------
+
+================================================================================
+HAWCStab2 Terminology used in "controller_input.txt" and corresponding
+HAWCStab2 command: "basic_dtu_we_controller"
+================================================================================
+
+--------------------------------------------------------------------------------
+controller_input.txt
+--------------------------------------------------------------------------------
+PI generator torque controller in region 1 (variable speed, variable power), starting at istate = 3
+K =   [Kopt_partial] [Nm/(rad/s)^2]
+PI generator torque controller in region 2 (constant speed, variable power)
+I =   0.307683E+08 [kg*m^2]
+Kp =   [Kp_partial] [Nm/(rad/s)]
+Ki =   [Ki_partial] [Nm/rad]
+PI pitch angle controller in region 3 (constant speed, constant power)
+Kp =   [Kp_full] [rad/(rad/s)]
+Ki =   [Ki_full] [rad/rad]
+K1 =   [K1_theta] [deg] K2 =     [K2_theta] [deg^2] (dq/dtheta =     -176.48944 kNm/deg)
+Additional terms due to the Aerodynamic damping
+Kp2 =   0.240394E-01 [rad/(rad/s)]
+Ko1 =       -1.69769 [deg], Ko2 =      -15.02688 [deg^2] (dq/domega =      243.08924 kNm/(rad/s))
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+command in hawcstab2 section of the thc file
+--------------------------------------------------------------------------------
+                                   1            2            3            4            5        6          7          8        9      10   11;
+                          Kp_partial   Ki_partial Kopt_partial      Kp_full      Ki_full K1_theta   K2_theta omega_filt csi_filt DT_freq type;
+basic_dtu_we_controller 0.193143E+08 0.433412E+07 0.225518E+07 0.649668E+00 0.318795E+00 70.70296  808.79462        0.4      0.7    1.92    1;
+--------------------------------------------------------------------------------
+

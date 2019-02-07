@@ -1,0 +1,419 @@
+!	Version information:
+!	Version name			! Date		Resp		Info
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+!	global%version='HAWC2MB 1.0'	! 20.04.2006	TJUL		Version system started. Changes in so_dyn_stall model performed.
+!					! 24.04.2006	TJUL/ANMH	Bearing3 in topology - slight modification still needed, but now mhha needs a version
+!	global%version='HAWC2MB 1.1'	! 25.04.2006    TJUL		mhha laptop in MAC check, integer overflow negletec in compiler settings
+!	global%version='HAWC2MB 1.1work'! 26.04.2006    TJUL		tjul stationairy pc in MAC check
+!									New check regarding thicknesses in aeodynamic files
+!					! 28.04.2006	TJUL		ktho stationairy pc in MAC check
+!	global%version='HAWC2MB 1.2'	! 28.04.2006    TJUL		Radius non-dim in structural _st input data and aerodynamic _ae data
+!	global%version='HAWC2MB 1.3'	! 01.05.2006    TJUL		Extra check in structural files reading procedures
+!									Tab characters can now be used in htc files and other input files
+!									Check that c2_def structure length larger than eps
+!	global%version='HAWC2MB 1.4'	! 02.05.2006    TJUL		New check in hawc_file output that time_stop>time_start
+!									Topologi_timoschenko.f90 updated related to changes in version 1.3
+!	global%version='HAWC2MB 1.5'	! 03.05.2006    TJUL		ktho laptop in MAC check
+!									Get_state_rot function in body.f90
+!									New mbdy state_rot output command in topologi_mainbody_output
+!									Rotation velocity and acceleration in aerodynamic blade section variables
+!							MACQ/TJUL	Dynamic_stall_mhh included
+!	global%version='HAWC2MB 1.6'	! 04.05.2006	TJUL		Extension of bladelink criteria for execution stop
+!	global%version='HAWC2MB 1.7'	! 09.05.2006	TJUL		New error message in windturb_mann.f90
+!									New error messages regarding matrix not definite problems
+!									New MAC checks (Niels Kjølstad + students)
+!	global%version='HAWC2MB 1.8'	! 09.05.2006	TJUL		New MAC check
+!	global%version='HAWC2MB 1.9'	! 16.05.2006	TJUL		New MAC check
+!	global%version='HAWC2MB 2.0'	! 18.05.2006	TJUL		New MAC check
+!	global%version='HAWC2MB 2.1'	! 19.05.2006	TJUL		Error messages corrected in mbdy state_rot command
+!							MHHA/TJUL	New MAC check procedure (loop over all adresses instead of only one) 
+!	global%version='HAWC2MB 2.2'	! 22.05.2006	TJUL		New ignore function in body actions
+!					! 30.05.2006	TJUL		Old MAC check procedure reimplemented since troubles occured with the new version
+!	global%version='HAWC2MB 2.3'	! 30.05.2006	TJUL		Replacement of procedure that calculates euler parameters based on transformation matrix (only important for cases with eulerp output used)
+!	global%version='HAWC2MB 2.4'	! 31.05.2006	TJUL		General cleanup in multibodyproto.f90 file (simple generator model excluded, now tmp_gen_speed output command is excluded)
+!					! 01.06.2006	TJUL		New MAC checks
+!	global%version='HAWC2MB 2.5'	! 04.06.2006	TJUL		External Licence manager DLL used. Avoids new versions of the HAWC2 code to be build at every new MAC number
+!					!				and and also works when the computer is not connected to a LAN
+!	global%version='HAWC2MB 2.6'	! 13.06.2006	TJUL		Newmark variables reorganized
+!					!				Hydrodynamic loads cut-in at 2secs, as for the aero loads. To reduce initial transients
+!					!				New acceptance criteria from License manager
+!					!				New input check in topologi_mainbody
+!					!				Order of radius of gyration input shifted for the new_htc_structure input. Now: 1st column (Rix) is the one affected if mass center position changes on the chord line
+!	global%version='HAWC2MB 2.7'	! 23.06.2006	ANMH		Normalisation of vectors in utils funtions get_two_plane_vectors. Used for better accuracy in bearing1 and bearing2 definitions
+!	global%version='HAWC2MB 2.8'	! 17.07.2006	TJUL/FRBA	Correction of bug in get_ae_data procedure in aeroload_calcforces unit. Profile sets higher than one is now also usable.
+!	global%version='HAWC2MB 2.9'	! 17.07.2006	TJUL		Gravity loads cut-in at 0.5secs, same method as for the aero loads. To reduce initial transients
+!									Harmonic2 function in general output (time limitid harmonic function)
+!	global%version='HAWC2MB 3.0'	! 24.07.2006	TJUL		topologi_mainbody_actions module added. New features to the actions list.
+!	global%version='HAWC2MB 3.1'	! 26.07.2006	TJUL		Mann turbulence is reused if simulation time is longer than included in turbulence box
+!	global%version='HAWC2MB 3.2'	! 28.07.2006	TJUL		Correction of bug in aerodynamic moment integration procedure (only related to aerodynamic file output)
+					! 31.07.2006	TJUL		Change of error message criteria regarding alowable number of bodies within a mainbody (<n elements)
+					! 01.08.2006	TJUL		Correction of bug in dynstall_mhh model so no division by zero occurs when a zerolift profile is used.
+					! 01.08.2006	ANMH		Correction of bug related to torsion of blade in the blade linker
+!	global%version='HAWC2MB 3.3'	! 04.08.2006	TJUL		Check applied on exp expressions in dynamic stall mhh model to avoid underflow errors
+!	global%version='HAWC2MB 3.4'	! 09.08.2006	TJUL		New check applied in mann turbulence unit to avoid array out of bounds during bizar startup transients
+!					! 11.08.2006	TJUL		Correction of exp check in dynstall_mhh model just created in version 3.2
+!	global%version='HAWC2MB 3.5'	! 28.08.2006	TJUL		Generator_rotation sensor setup for old_htc_structure format - replaces the older tmp_gen_speed sensor. Updates in hawcstructure.f90 and body_output.f90
+					!				New error message in body_output
+					!				Improvement of general command reader in genout_tools in order to accept tabulator spacings
+					!				General shine up of aerodynamic calculations regarding induction and tiploss - calculations rechecked against IEA rev 3 calculations
+					!				Number of radial point in the induction calculation is default set to the name number as number of aero sections. Previous default of 30 stations
+					!				Linear interpolation in aeroload_tools updated so no division by zero occurs when x0=x1, used in cases where extrapolation is not wanted
+					! 29.08.2006    ANMH/TJUL	Fix1 constraints updated in topologi_constraints_fix1.f90 and hawcstructure.f90. Ensures e.g. that constraint properties are identical for blades. Ensures that blades performs identically.
+!	global%version='HAWC2MB 3.6'	! 14.09.2006	TJUL		New acceptance criteria from license manager
+!	global%version='HAWC2MB 3.7'	! 15.09.2006	TJUL		New general load linker that replaces bladelink.f90 and wavelink.f90
+					!		ANMH/TJUL	Pitchsensors (bearing sensor) updated during iterations too. Especially important for DLL controllers
+!	global%version='HAWC2MB 3.8'	! 06.10.2006	TJUL		Correction of bug related to aero int_force and int_moment sensors
+					! 				Correction of bug in DLL actions. On nodes different from nr. 1, in- and external forces and moments were placed on the node 1 number lower.
+					!		TJUL		Pitch sensor modified. Now pitch velocity is clculated based on numerical differentiation of calculated angle. Should be less sensitive to solver inaccuracies.
+					!		TJUL		In output of bearing sensor new options are added. (-180:180 deg output etc.)
+					!		ANMH		Correction of bug in loadlinker. It turned out that loadfunction were only correct if an even number of calculation points were used (aero or hydro). Now OK also for odd numbers
+!	global%version='HAWC2MB 3.9'	! 06.10.2006	TJUL		Soil spring module added (soil stuff from hydro module removed)
+!	global%version='HAWC2MB 4.0'	! 02.11.2006	TJUL		Extra output commands in aero output_at
+!	global%version='HAWC2MB 4.1'	! 02.11.2006	ANMH/TJUL	Replacement of added stiffness method for soil springs. Much better and faster than previous. Still not perfect.
+					! 10.11.2006	ANMH/TJUL	Update of bearing3. Now it is general.
+					! 10.11.2006	TJUL		Output variables rearranged. Only command included in bearing outputs
+					! 10.11.2006	TJUL		Topologi input modified so many bases are allowable.
+					! 15.11.2006	ANMH/TJUL	Files synchronized with Anders. Slight update in dll_calls,dll_types and windturb_mann.
+!	global%version='HAWC2MB 4.2'	! 16.11.2006	TJUL		Rearrangement of output/action sensor allocation. Reduces .exe size from 23MB to 2.3MB
+					!		TJUL/HAMA	Correction of sensors induc and windspeed in output_at aero. They were previously in a wrong coordinate system when written to output_at.
+!	global%version='HAWC2MB 4.3'	! 17.11.2006	TJUL		New fix3 constraint. Locks a node to ground in a given rotation direction.
+					! 23.11.2006	ANMH		Update of loadlinker with respect to procedures for numerical update of stiffness, damping and mass terms. Improves solutions of soil spring systems significant.
+					! 27.11.2006	TJUL		Same procedure used for the hydrodynamic part => faster convergence.
+!	global%version='HAWC2MB 4.4'	! 27.11.2006	TJUL		Bug fixed related to input for action sensor: mbdy moment_int
+					! 04.12.2006	ANMH		index+7 -> index+6 in body_get_state_rot subroutine. Affects orientation of all local load elements in load linker.
+!	global%version='HAWC2MB 4.5'	! 06.12.2006	TJUL		New sensors in aero module.
+					!				Out of bounds bug in aero output_at corrected
+					! 07.12.2006	ANMH		Files used in topologi_tools are closed after use.
+					! 12.12.2006	TJUL		In make output command, outputs are bypassed if global time > output stoptime
+					! 13.12.2006	TJUL		In mann turbulence a new command (dont_scale) is made.
+					! 21.12.2006	TJUL		Update of HAWC_mann module. Important only if turbulence outside box is used.
+					! 04.01.2007	TJUL		omega vector for aerodynamic module in rotor reference coordinates. In aero files only rotation speed around y-axis is used. Eliminates influence from e.g. pitch velocity
+					! 04.01.2007	MHHA/TJUL	New optional relaxation parameter for solver. Extra command in simulation input.
+!	global%version='HAWC2MB 4.6'	! 12.01.2007	ANMH		Change of sign in forcedll.f90. Important only if an external force dll as coupled springs are used. Not important for hawc_dll
+!	global%version='HAWC2MB 4.7'	! 06.02.2007	ANMH/TJUL	Update of code structure, multibodyproto split into several subroutines
+					! 				New logical variables related to simulation_input
+					!				New state_at in mbdy output
+!	global%version='HAWC2MB 4.8'	! 08.02.2007	TJUL		mbdy actions force/moment commands updated with sign possibility on force component
+!	global%version='HAWC2MB 4.9'	! 12.02.2007	TJUL		new error message in turbulence input reader
+					! 19.02.2007	TJUL		New potential flow tower shadow model where source is linked to tower motion
+!	global%version='HAWC2MB 5.0'	! 26.02.2007	TJUL		New mbdy state_rot output option: orientation in euler angles defined through the rotation order xyz
+!	global%version='HAWC2MB 5.1'	! 27.02.2007	TJUL		Correction of method used to calculate mbdy state_rot rotation in general
+!									New mbdy state_rot output option: orientation in euler angles defined through the rotation order yxz
+!									Small adjustements in DLL_output to avoid array out of bounds when long mbdy names are used
+!	global%version='HAWC2MB 5.2'	! 02.03.2007	ANMH/TJUL	Bug fixed related to continue_on_no_convergence criteria
+!							TJUL		HAWC2MB version echoed to screen before input is read.
+!							TJUL		New licence manager compiler option
+!	global%version='HAWC2MB 5.3'	! 13.03.2007	ANMH/TJUL	Bug fixed related to bearing3. Somehow the coupling nodes was not defined since version 4.0 It affects the transfer of loads from bearing3 and further dow the tower.
+!	global%version='HAWC2MB 5.4'	! 21.03.2007	TJUL/ANMH	Eigenfrequency analysis feature added. Performs analysis on every individual body
+!					!		TJUL		Some pointer nullify's are changed to deallocate(pointer).
+!	global%version='HAWC2MB 5.5'	! 29.03.2007	TJUL		Small change in constraint bearing2 action input. Now only 4 parameters nessecairy as was allways the idea.		
+!	global%version='HAWC2MB 5.6'	! 10.04.2007	TJUL		Bug fix related to number of output sensors in DLL output
+					!		ANMH		Change in external force module force_dll.f90. Update sequence of affected body changed.
+					!		TJUL		body_update_T is called in the end of post_init in order to allow for added stiffness, damping etc. by the rest of the initialization subroutines.
+!	global%version='HAWC2MB 5.7'	! 16.04.2007	TJUL		Small update of continue on no convergence
+	global%version='HAWC2MB 5.8'	! 18.04.2007	TJUL		Mann turbulence files is closed after every buffer read. To allow several simulations acces to the same turbulence files.
+					!				New initial buffer read so out of x-bounds errors are avoided. Uses periodicity of turbulence boxes. In principal this allows for infinitely large simulations.
+!	global%version='HAWC2MB 5.9'	! 23.04.2007	TJUL		Opening of mann turbulence boxed with loops and waits so several simulations can acces the same turbulence.
+					! 26.04.2007	TJUL		Only option in mbdy output, wind output, hydro output
+									SO dynamic stall input parameters put in as default. No need for parameter input if not changed.
+					! 23.05.2007	TJUL		Check that turbulence scale_time_start is less the total simulation length
+									Correction of bug related to "only" option for output for main_body, wind and hydro output commands
+!	global%version='HAWC2MB 6.0'	! 01.06.2007	TJUL		New error check that animation can be written to. Error message if not.
+					! 08.06.2007	TJUL		New possibility of continuing read in masterfile in a new file with the command:'continue_in_file'. Infinite number of level can be made. Filename also written to logfile when line number is written.
+					! 15.06.2007	TJUL		Logfile_name command option in simulation_input. Enables file written logfiles. Error messages more clear with *** ERROR *** as key word
+					! 08.08.2007	TJUL		Aerodynamic drag forces on structures enables with the new module aerodrag.
+!	global%version='HAWC2MB 6.1'	! 03.09.2007	TJUL		Corrections made in continue_in_file option. End of file check removed - replaced with exit command.
+					! 03.09.2007	ANMH		New unitnumber used when turbulence files are reopened. To avoid unit mismatch especiall
+					! 05.09.2007	TJUL		Bug fixed in hydroload module. Only important when more than one hydro element are used.
+					! 06.09.2007	TJUL		Bug fixed in hydroload module. Important if hydroelements have different coo than global.
+					! 07.09.2007	TJUL		Bug fixed in hydroload module. Important if relative z_distances has been used as hydro element input
+!	global%version='HAWC2MB 6.2'	! 20.09.2007	PBJA/TJUL	Dynamic stall module that combines the mhh Beddoes stall model with the MACflap model. Coded by PBJA, implemented by TJUL.
+!	global%version='HAWC2MB 6.3'	! 10.10.2007	TJUL		New general output command "general stairs" for a series of step functions. 
+!	global%version='HAWC2MB 6.4'	! 29.10.2007	TJUL		Some files synchronized with HAWC2aero regarding !IFDEF compiler directives
+					! 12.11.2007	TJUL		Torque and power output sensor in aero module modified to give correct results also with use of hub extenders
+					! 27.11.2007	TJUL		Wake meandering model implemented, rearrangement of aero files to avoid compiler linker (circulation) errors
+					! 29.11.2007	ANMH		Eigenvalue solver for complete turbine at standstill, initialisation of aerodrag element number
+!	global%version='HAWC2MB 6.5'	! 04.01.2008	TJUL		User defined turbulence scaling implemented. Similar in principle to user defined shear.
+					! 17.01.2008	TJUL		Bearing3 omegaS action command implemented to enable rotor speed control directly from external DLL
+					! 04.02.2008	ANMH		Bouyancy forces calculated based on external pressures
+			!				TJUL		Prestress constraint fix4
+		!							DLL call to external wake kinematics dll changed. E.g. dynamic pressure added
+!	global%version='HAWC2MB 6.6'	! 04.02.2008	TJUL		fix5. Cardan shaft contraint. Locked in relative translation. Locked in rotation around one vector
+					! 08.02.2008	TJUL		Bug fixed in turbulence module affecting version 5.5.
+					! 08.02.2008	TJUL		Bug fixed regarding turbulence scaling factors. In version 6.5 the turbulence was exclude for normal use - corrected.
+					! 08.02.2008	TJUL		Previous .dat file deleted when hawc_binary output files are written.
+					! 11.02.2008	TJUL		In mann and flex turbulence module: std scaling factors default to v=0.8 u=1.0 w=0.5
+					! 11.02.2008	TJUL		Bug fixed regarding IEC-gust EWS
+					! 13.02.2008	TJUL		New Auto distribution of hydrodynamic calculation points possible
+					! 13.02.2008	TJUL/ANMH   Bug fixed regarding hydrodynamic boyancy. Axial force on conical members changed from distributed forces to constant force contributions instead (to decrease sensitivity to number of hydro points)
+		!							F function only on external kinematics in hydro module.
+		!							Dynamic pressure contribution include. Also in wkin_dll calling format.
+		!							Coordinates in wkin_dll call changed from global to local hydro coo (origo in 0,0,MSL Z-dir vertical upwards, X-dir in wave direction)
+		!							Change in hydro output command "fm" and "fd"
+					! 15.02.2008	TJUL		trim commands inserted in reading of master input "begin" and "exit" commands.
+					! 15.02.2008	TJUL		Bug fixed regarding output of "free_wind_hor" command.
+					! 19.02.2008	TJUL		S.O. dynamic stall parameters included as default
+	global%version='HAWC2MB 6.7'	! 26.02.2008	TJUL		Bug fixed regarding mbdy action command with "local" coordinates
+					! 27.02.2008	TJUL		Extra error messages for errors during aero read routines
+					! 29.02.2009	TJUL		Small modifications in eigenvalue solver so large eigenvalue problem can be solved without very large stack size
+					! 06.03.2009	TJUL		Dynamic pressure on conical sections also in hydroload
+					! 09.03.2009	TJUL		Wordlength incresed to 100 chars in general input reading.
+					! 11.03.2009	TJUL		Error handling for infinity cases in hawc_binary output
+					! 11.03.2009	ANMH/TJUL	Dynamic pressure on conical hydro sections
+					! 11.03.2009	TJUL		Update of mann turb reading routines for boxes where N_y<>N_z
+					! 11.03.2009	TJUL		Small modifications in the wake module for robustness
+!	global%version='HAWC2MB 6.8'	! 14.03.2008	TJUL		Update of tower shadow pot2 and jet2 models, so they can handle multple sources.
+!	global%version='HAWC2MB 6.9'	! 21.03.2008	TJUL		Increase of maxloops in mann turbulence reading.
+!	global%version='HAWC2MB 7.0'	! 09.04.2008	TJUL		New check in license_manager
+!	global%version='HAWC2MB 7.1'	! 21.05.2008	TJUL		Bug fixed in command line interpreter (if too many command words were present)
+					! 26.05.2008	ANMH/TJUL	Concentrated masses option in main_body (no coriolis effects etc. so far)
+					! 11.06.2008	TJUL		Extra acceleration sensor including gravity
+					! 13.06.2008	TJUL		Minimum values of rotational speed and free wind speed in the indution module.
+!	global%version='HAWC2MB 7.2'	! 15.06.2008	TJUL		F startup function and relative motion in aerodrag included
+					!				extra check on shear power law expression in wind module to avoid NAN's
+!	global%version='HAWC2MB 7.3'	! 22.07.2008	TJUL		Concentrated mass in modal calculation
+					! 01.08.2008	TJUL		Bug in calculation procedure of aerodynamic torque and power corrected.
+					!				Bug in tower shaddow pot2 and jet2 models corrected. Important only if rotation of tower legs were present.
+!	global%version='HAWC2MB 7.4'	! 05.08.2008	ANMH		Change in output of forces/moments in general. More correct when long elements are used. Distributed external loads, inertial loads included on top of elastic part. Previously only elastic part used.
+			!				ANMH		Hydrodynamic axial drag possible
+		!							Bearing 2 updated to allow for +-180deg rotation
+					! 06.08.2008	TJUL/HAMA	Update of tower shaddow 2 models. Factors multiplied instead of deficits added. Better when several tower shadow sources are used.
+	global%version='HAWC2MB 7.5'	! 08.08.2008	TJUL		Correction of matrix conditioning during eigenvalue calculations. Version 7.3 and 7.4 was not correct regarding this!
+	global%version='HAWC2MB 7.6'	! 24.09.2008	TJUL		Bug fixed in tower pot2 model.
+					!				Old LIB files for old HAWC input format read, removed from project
+	global%version='HAWC2MB 7.7'	! 01.10.2008	TJUL		Extra logfile output regarding load linking.
+					!				NEED EXTRA ATTENTION -NOT COMPLETELY FIXED YET- WORK ONLY when body structure is defined along the body z coodinates! Bug fixed in aerodrag module (important if aerodrag is linked to a structure where local element and body coo doesn not coincide)
+					! 08.10.2008	PBJA/TJUL	Mann turbulence generator DLL call added
+					! 08.10.2008    TJUL		Warning written if a comma "," is written within a command line
+	global%version='HAWC2MB 7.8'	! 10.10.2008	TJUL		Animation files for structure eigenvalues calc placed in same directory as eigevalue list
+					! 10.10.2008	TJUL		Limitations in orientation_relative removed. Any coupling node can now be chosen. Eigenvalue solver however not updated for this option yet.
+	global%version='HAWC2MB 7.9'	! 17.11.2008	TJUL		Extra subroutines in normal DLL hawc_dll call. Subroutines added: init and message
+					! 18.11.2008	TJUL		Directories needed are now automatically created if they do not exist
+					! 19.11.2008	TJUL		A status sensor is added in the general outputs.
+					! 19.11.2008	TJUL		Solvertype is default set to 1=newmark
+					! 20.11.2008	TJUL		In dynamic wake model, downstream distance without offset, makes better agreement with measurements - and FIDAP
+					! 20.11.2008	TJUL		In Dynamic Wake Model: Possibility of writing file with Ct and Cq data
+					! 21.11.2008	TJUL		Change in force DLL module. Now bodyname refers to a main_body
+					! 21.11.2008	ANMH		Update of initial hydrodynamic loads for added mass/stiffness calculation
+					! 21.11.2008	ANMH		Update of loadlinker and solver wrt. calculation of added mass/stiffness/damping. Asymmetric solver now used - to improved convergence for hydrodyn. problems
+!	global%version='HAWC2MB 8.0'	! 28.11.2008	TJUL		In wake meander model. User calculated deficits can be read.
+					! 02.12.2008	TJUL		Change in error message of tower shadow jet and jet2 model - when points requested is inside tower.
+					! 02.12.2008	TJUL		General output sensor "status" is set to -1 in last time step.
+					! 03.12.2008	PBJA		Near wake induction model implemented
+					! 03.12.2008	PBJA		Possibility of exporting wind field including shear, tower shadow, wake etc.
+					! 03.12.2008	PBJA		In normal induction model. First order time filter on induced velocities replaced with two indicial functions - modified filter approach. Better agreement with NASA AIMES experiment.
+					! 18.12.2008	ANMH/TJUL	Bug correction of concentrated mass indexing in eigenvalue calculation. Important (only) if mass is connected to body node 1.
+!	global%version='HAWC2MB 8.1'	! 09.01.2009	TJUL		In mann model. Auto generation of missing turbulence in more general form.
+					! 09.01.2009	TJUL		In hydro module. Currents included, wave direction included.
+					! 09.01.2009	TJUL		Update of Dynamic wake meander model.
+					! 16.01.2009	ANMH		Assymmetric solver option, which decreases number of iterations for offshore simulations considerable. Newmark-symmetric option
+!	global%version='HAWC2MB 8.2'	! 20.01.2009	TJUL		Bug found in version 8.0 regarding Dynamic wake meander model. Input deficits to Aislie model with wrong value in last radius point.
+	global%version='HAWC2MB 8.3'	! 21.01.2009	TJUL		Rearrangement of write procedure for final deficit in Dynamic wake meander model. Array-out-of-bound could occur in special cases
+					! 02.02.2009	TJUL		New twist angle sensor in output_at aero commands
+					! 27.02.2009	TJUL		Small correction of tip loss model. sin(phi) instead of phi.
+					! 11.03.2009	ANMH/TJUL	Update of modal solver. Now also usable for floating systems.
+					! 18.03.2009	HAMA/TJUL	Update of Dynamic wake meander model. Deficit are now more narrow than previous. Default parameters k1,k2 are changed.
+					! 05.05.2009	ANMH		Bug fix in mass matrix and orthogonally of local orientation matrices. Important (only) with prebend and mass center offset from elastic axis.
+					! 05.05.2009	TJUL		Small updates regarding mbdy commands instead/supplementary to old body commands in new_htc_structure inputs
+					! 05.05.2009	ANMH		Extra parameter in hydro element regarding linear axial drag contribution.
+					! 06.05.2009	TJUL		More residual information outputted in case of no convergence
+!	global%version='HAWC2MB 8.4'	! 11.05.2009	TJUL		New input check on number of mann box points. power of 2 criteria.
+!									Mode shape animation files written in appropriate directories.
+					! 12.05.2009	ANMH		Initialization of timosection properties
+					! 13.05.2009	TJUL		No double eigenvalue sets are written in table of structural frequencies
+!	global%version='HAWC2MB 8.5'	! 14.05.2009	ANMH		Bug corrected in eigenvalue solver related to version 8.3 and 8.4
+!	global%version='HAWC2MB 8.6'	! 08.07.2009	TJUL		Bug fix related to mann turbulence look-up indexes for points just outside the turbulence box.
+	                                ! 08.07.2009	TJUL		New updates of DWM wake model. New ainslie-15.exe and modification of default parameters.
+!	global%version='HAWC2MB 8.7'	! 24.08.2009	TJUL		In main_body input limitation of 4 c2def points lower to 2. If less than 4 points, linear interpolation is used.
+					! 30.08.2009	TJUL		Element coordinates can now be used without limitations. Local coordinate system written in beam_output_file.
+					! 04.09.2009	ANMH		Loadlinker updated so arbitrary body coordinations systems can be used. Linker now foolows local curved beam direction
+					! 04.09.2009	TJUL		Positive definite damping model originally formulated by Morten H. Hansen is included in HAWC2. Makes it possible to utilize the shear center position away from the elastic axis without problems with damping model.
+					! 05.09.2009	TJUL		Small bugfix related to aerodrag module.
+!	global%version='HAWC2MB 8.8'	! 08.10.2009	TJUL		Bug related to damping model changes in version 8.7 corrected.
+!	global%version='HAWC2MB 8.9'	! 09.10.2009	ANMH/TJUL	New structure output: Structure_inertia_file_name
+	global%version='HAWC2MB 9.0'	! 26.11.2009	TJUL		New check for input errors regarding negative diameters in aerodrag module
+	                                ! 03.12.2009	TJUL		In wake model. Ainslie-15.exe replaced by ainslie-15.dll, to enable execution on linux platforms using WINE
+					! 21.12.2009	TJUL		In wake model. Bug fixed dealing with several neigbouring wind turbines. Change in turbine order for ainslie15.dll input/output
+					! 30.12.2009	TJUL		Flex integer format option in output.
+					! 04.01.2010	TJUL		Change in variables in eigenvalue module to avoid stack errors
+					! 05.01.2010	TJUL		Change in loadlinker merge criteria to avoid error with closely spaced nodes
+					! 31.01.2010    TJUL		New control DLL module names type2_dll
+					! 31.01.2010	TJUL		Possibility to input case_sensitive words using ' symbols. Especially related to control subroutine names.
+					! 15.02.2010	TJUL		Change in wind shear logarithmic format to ensure a shear of zero below global zero.
+	global%version='HAWC2MB 9.1'	! 29.03.2010	TJUL		New parameter possible in mbdy moment_int actions command
+					! 31.03.2010	ANMH		Possibility of external systems solved together with HAWC2, this goes for bodies and constraints
+					! 01.04.2010	TJUL		Small update of result file sensorlist output for hawc_ascii and hawc_binary
+					! 15.04.2010	TJUL		Updates in FORCE DLL module. New initialization option, label option.
+					! 17.05.2010	TJUL		Update of wind ramps to speed up simulation time
+					! 29.06.2010	TJUL		DLL module, type2_dll updated regarding first outputs in dll calls
+					! 16.07.2010	TJUL		Small change in compiler settings.
+	global%version='HAWC2MB 9.2'	! 13.08.2010	TJUL		Possibility for aerodynamic sections positioned according to ae_file input.
+					! 25.08.2010	TJUL		Updated procedure for hub coo which defines coo with arbitrary rotor orientation
+					! 09.09.2010	TJUL		Simulation stop enabled by external dll action.
+					! 13.09.2010	JOMH		Updated eigenvalue solution procedure
+					! 13.09.2010	JOMH		Zero-termination of all strings used for dll's
+					! 28.09.2010	TJUL		Bug correction from version 9.1 regarding wind steps. 
+!	global%version='HAWC2MB 9.3w'	! 06.10.2010	TJUL		Bug correction in interpolation of profile coef when several pc sets are used.
+					! 20.10.2010	TJUL		Bug correction of predictor in newmark solver. Version 9.0 and 9.1 gave problems coupling in controllers
+					! 21.10.2010	TJUL		Eigenvalue solver from version 9.2 removed and old 9.1 version included instead. Not correct solutions in all cases.
+					! 21.10.2010	TJUL		Turbulence buffer not updated when buffer contains the full turbulence box.
+!	global%version='HAWC2MB 9.4'	! 21.10.2010	TJUL		Code updated for handling multiple aerodynamic rotors
+					! 26.10.2010	TJUL		Be aware that the near wake induction model is not working in this edition. The normal induction model works fine though.
+					! 26.10.2010	JOMH		Eigenvalue solver updated again, so now it should be both correct and robust
+!	global%version='HAWC2MB 9.5'	! 12.11.2010	TJUL		Bug fixed when outputting wake pos when no wake defined - code crash occured.
+					! 17.11.2010	TJUL		BEM rewritten in more structured way and to make sure local properties in grid points are all local. More correct for non-uniform loading
+					! 19.11.2010	TJUL		IN BEM, time filters are now on induced velocities instead of factors,same goes with azimuthal yaw correction in induction.
+					! 21.11.2010	TJUL		WSP lookup only performed for first iteration to save simulation time.
+					! 24.11.2010	TJUL		Final adjustments of BEM induction
+!	global%version='HAWC2MB 9.6'	! 27.11.2010	TJUL		Improvements of yaw correction in BEM calculation, comparison with FIDAP
+	                                ! 02.12.2010	TJUL		Bugfix related to output of DWM wake position
+!	global%version='HAWC2MB 9.7'	! 03.12.2010	TJUL		Improvements of yaw correction in BEM calculation, comparison with FIDAP
+					! 03.12.2010	TJUL		BEM restructured for more correct local CT prediction, time constants on induced velocities, yaw correction on induced axial velocities instead of factors
+					! 03.12.2010	TJUL		BEM improved regarding aerodynamic yaw correction, compared with actuatordisc results
+					! 03.12.2010	TJUL		BEM improved regarding dynamic time constants, compared with actuatordisc results
+					! 03.12.2010	TJUL		Dyn. time constants reduced for first 10seconds to reduce time for initial equilibrium
+!	global%version='HAWC2MB 9.8'	! 17.12.2010	TJUL		Small bug correction. Crash occured when aero output requested when rotor was not defined
+					! 28.12.2010	MHHA		Bug fix regarding omega vector for aero module. Version9-2 to 9.7 had problems with rotor orientations azimthally angle more than +-90deg.
+!	global%version='HAWC2MB 9.9'	! 05.01.2011	TJUL		Update regarding wake meandering,lowpass filter in time instead of area based filter
+!	global%version='HAWC2MB 10.0'	! 17.01.2011	TJUL		New calibration in DWM model. Ainslie_16.dll used.
+!	global%version='HAWC2MB 10.1'	! 01.02.2011	TJUL		BEM bug correction regarding induction for two bladed turbines. + DWM model deficit k1 paprameter changed to 0.20 as default
+!	global%version='HAWC2MB 10.2'	! 01.02.2011	TJUL		User defined a-ct relation in BEM included
+!	global%version='HAWC2MB 10.3'	! 08.02.2011	TJUL		DLL action command aero bem_grid_a inserted.
+!	global%version='HAWC2MB 10.4'	! 18.03.2011	TJUL		In DWM model, k1 parameter default value changed back to 0.13 (good match with Egmond aa Zee measurements)
+					! 13.05.2011	TJUL/LEOB	Bug corrections in the maghmhh dynstall model
+					! 16.05.2011	ANMH		Update and general improvement of hydrodynamic mass so is it coded in body coordinates (time varying)
+					! 17.05.2011	TJUL		Small updates of modal_new.f90 to minimize stack usage
+!	global%version='HAWC2MB 10.5'	! 17.05.2011	ANMH		Concentrated hydrodynamic added masses also included in new procedure, which makes the solver converge faster and more stable than previous
+!	global%version='HAWC2MB 10.6'	! 15.06.2011	TJUL		Update of mbdy state_rot output
+					! 12.08.2011	TJUL		Small update in variable check to fullfill requirements from new compiler
+					! 30.08.2011	TJUL		Updates in hydrodynamics related to flooded members.
+					! 31.08.2011	HAMA/TJUL	Limitation in tangential induction changed (tangential induction not correct for high loading Ct)
+					! 31.08.2011	LEOB		New updated model for dynamic stall of trailing edge flaps
+					! 05.09.2011	TJUL		Updates in buoyancy regarding point change in diameters
+					! 05.09.2011	TJUL		Update in structure output. Hydro added mass outputted if defined.
+					! 13.09.2011	LEOB		New alfadot sensor in aero output
+					! 19.09.2011	TJUL		Hydro added mass solver module updated for inner flodded area
+					! 26.09.2011	KNKR		New spinner output sensor in aeroload module
+!	global%version='HAWC2MB 10.7'	! 04.10.2011	TJUL		External forces enabled for external modules
+					! 18.10.2011	TJUL		In DWM model, Multiple wakes handled by choosing the decifit with larget wsp reduction. Previously a summation of deficits was performed
+					! 24.10.2011	TJUL		In boyancy part. Correction with eps at mudlevel, to improve stability when structure ends at mudlevel.
+	global%version='HAWC2MB 10.8'	! 02.11.2011	TJUL		Fourrier based low pass filter in DWM model instead of second order filter
+					! 09.11.2011	LEOB/TJUL	Update in dynamic induction to include the influence of trailing edge flaps
+					! 18.11.2011	TJUL		New random output sensor added to general output commands.
+					! 22.11.2011	ANMH/TJUL	Update in topology initial rotation velocities. Should decrease initial transients
+					! 22.11.2011	TJUL		Aerodynamic load is removed for first 5 second and then gradually put on structure (fully applied at 10s) to avoid convergence problems during initial transients.
+					! 05.12.2011	TJUL		Close dll's inserted to increase robustness on especially windows 7 platforms
+					! 05.12.2011	ANMH		Eigenvalue solver update to account for non-coinciding nodes and free relative rotation
+					! 02.11.2011	ANMH		Orientation of node in call to FORCE_DLL is changed (back) to global reference
+					! 02.11.2011	ANMH		Disabling of constraints can now be handled - new command "disable_at" is introduced for constraints FIX0, FIX1, BEARING1 and BEARING2
+					! 02.11.2011	ANMH		"INPUT" subroutine introduced in EXTSYS which enables HAWCDLL to send output to EXTSYS
+					! 06.11.2011	LEOB		Update of dynamic stall models MHH and ATEF for correct handling of +-pi angle of attack crossing.
+					! 07.11.2011	TJUL		New aero command 'output_profile_coef_filename', enables output of static interpolated profile coefficients
+					! 07.11.2011	ANMH/TJUL	Update of initial structural velocity conditions, to reduce the initial transients in general
+					! 08.11.2011	TJUL		New aero sensor, where is is possible to ouput the local elastic torsion
+	global%version='HAWC2MB 10.9'	! 15.12.2011	TJUL		New procedure for calculating non-rotating hub coordinate system. Important for free-yawing rotors.
+!	global%version='HAWC2MB 11.0'	! 21.12.2011	TJUL		New dll action commands (wind windspeed_u, wind winddir)
+					! 21.12.2011	TJUL		For DWM wake model, Ainslie_17.dll replaces Ainslie_16.dll. Updated regarding number of neighbor turbines in the flow solver.
+					! 30.01.2012	TJUL		Bug fix related to input of using different aerodynamic _ae sets.
+					! 13.01.2012	TJUL		Bug fix related to naming of 'output_profile_coef_filename' in the aero block
+					! 13.01.2012	LEOB		Update of deflection shape integrals in ATEF dyn. stall model. Based on UPWIND test cases.
+					! 21.03.2012	TJUL		Update in DWM wake model. Turbulence intensity for kinematic viscosity is now from ambient tint and not meander turb tint.
+					! 23.03.2012	TJUL		New sensor mbdy state_at2, where the xy offset is defined in local c2def coordinates instead of elastic axis coo.
+!	global%version='HAWC2MB 11.1'	! 21.12.2011	TJUL		New dll action commands (wind windspeed_u, wind winddir)
+					! 24.04.2012	TJUL		Bug fix in IEC gust EWS. Wrong rotor diameter used in normalization - manual updated too.
+!	global%version='HAWC2MB 11.2'	! 09.05.2012	TJUL		Bug fix related to aerodynamic induction of one-bladed turbines.
+!	global%version='HAWC2MB 11.2'	! 09.05.2012	TJUL		Bug fix related to aerodynamic induction of one-bladed turbines.
+!	global%version='HAWC2MB 11.3'	! 24.05.2012	TJUL		In tower shadow JET model, distance criteria changed to match physical units. Only of importance if tower radius < 1m
+					! 25.05.2012	TJUL		Bug fix in tower shadow JET model. x-offset normalized with tower diameter instead of radius.
+					! 10.07.2012	TJUL		Bug fix in S.O. dyn. stall model
+					! 10.07.2012	ANMH		External output sensors in ESYS (external systems) enabled
+					! 10.07.2012	ANMH		In hydro dynamics. Added mass and drag defined in two dimensions for new general hydro section
+					! 10.07.2012	ANMH		DLL call for ESYS (external systems) changed to MEFF,CEFF,KEFF instead of newmark matrices
+					! 10.07.2012	ANMH		Bug fix in output of mass centers
+					! 10.07.2012	ANMH		Eigenvectors output together with eigenfrequencies for local bodies
+					! 20.07.2012	TJUL		New wind sensor "wind free_wind_shadow" including effects of tower shadow
+!	global%version='HAWC2MB 11.4'	! 20.07.2012	TJUL/HAMA	Induction model for VAWTC's implemented.
+					! 15.08.2012	LEOB/TJUL/GEORG Update of induction model for high CT loading
+					! 11.09.2012	TJUL		New aero output sensor "aero grid_all_induc_u"
+					! 27.09.2012	ANMH/TJUL	In hawc ascii outout, limit of 500 channels removed
+					! 27.11.2012	TJUL		Correction of bug regarding more _ae data sets than 2.
+!	global%version='HAWC2MB 11.5'	! 06.12.2012	TJUL		in orientation relative, new "relpos" command enabled
+					! 10.12.2012	TJUL		Taylors hypothesis included in EOG gust
+					! 21.03.2013	GEPIR		Speedup optimization modification of aeroload_induction_bem module
+					! 22.03.2013    TJUL        New general output impulse function added
+					! 22.04.2013	TJUL		Mann turbulence DLL is closed after turb generation, to remove fault seen on linux clusters with multiple turbulence set created
+					! 03.05.2013	TJUL		New Flex int writing loop to minimize writing time on network drives
+					! 14.05.2013	TJUL		Wave direction reversed to match manual definition
+					! 26.06.2013	TJUL		Bug fix in VAWT module regarding aerodynamics on turbines with more blades than 2
+					! 27.06.2013	TJUL		Reordering of output related to command "body_eigenanalysis_file_name". Frequencies first, later eigenvectors
+!	global%version='HAWC2MB 11.6'	! 25.09.2013	TJUL		VAWT update for handling non vertical blade configs
+					! 30.09.2013	MACG		Update of MHHA dyn. stall model to account for extra term important for VAWT operation
+					! 30.09.2013	TJUL		In aero output. "tors_e" options inserted parallel to "tors_ang" to match explanantion in the manual
+					! 01.10.2013	TJUL		Bug fix in aero drag, sign issue on force direction for negative force directions.
+					! 11.10.2013	TJUL		With VAWT's aero center is moved to C_1/2 instead of C_3/4 
+					! 03.01.2014	TJUL		Encrypted blade data
+					! 04.01.2014	TJUL		Move of update time call to external water kinematics dll. To ensure it is also called even if no hydro elements are used.
+					! 16.01.2014	TJUL		Aero output parameters ct_local, cq_local and tiploss_f enabled
+					! 17.01.2014	TJUL		Aero BEM induction. Small change in procedure of how to find induction grid loading. Now in line with VAWT approach.
+					! 27.02.2014	TJUL		Change in shears, so size of shears change if windsteps are included.
+					! 06.03.2014	EBRA		General prepare for intel compiler
+					! 13.03.2014	TJUL		new aero option: 3D profile correction using Snel's approach
+					! 19.03.2014	LARH		New stiffness proportional damping model
+					! 19.03.2014	ANMH		New eigenvalue option including contributions from external systems
+					! 19.03.2014	ANMH		Super element approach to condensate degrees of freedom for sub systems - eg jackets. Still not a perfect match with full DOF solution for internal cross sectional members of a static undertermined structure!
+					! 20.03.2014	TJUL		Turbulence export option re-implemented
+					! 14.05.2014	TJUL		Encrypted password lib updated
+					! 14.05.2014	TJUL		Procedure to ensure more robust auto shut-off of bem for idling/standstill conditions
+!	global%version='HAWC2MB 11.7'	! 21.05.2014	TJUL		Added stiffness contribution from version 11.6 is switched off again - caused increase in iterations especially for jackets
+		!							Memory use related to output sensors minimized
+!	global%version='HAWC2MB 11.8'	! 16.07.2014	TJUL		Create directory function increased for "../../" paths
+					! 22.07.2014	TJUL		Dyn stall MHH model rolled back to version 11.5. The modification in 11.6 wrt. VAWT affected HAWT operation. A better dyn stall model for VAWT must be coded
+					! 22.07.2014	TJUL/ANYD/MMPE	Comprehensive testprogram established. Used on this version and future.
+!	global%version='HAWC2MB 11.9'	!				Read and write status declared when working with files. Should prevent access errors on net work drives especially
+					!				Stop code defined when code is stopped by internal criteria
+					! 12.09.2014	TJUL		In BEM model with "use_mean_average" switched on, the inducted velocities are now found based on a consistent use of average wind speed in annular element.
+					! 19.09.2014	TJUL		Update to BEM "use_mean_average" stuff from 12.09.2014. The local grid velocities was still present a few places
+					! 22.10.2014	TJUL/ANMH	Code sync with svn version. Prepared for intel compilation.
+					! 23.10.2014	ANMH		Contributions from inertial/gyroscopic effect of concentrated masses added in a general way. It is now OK to use concentrated massed on the rotor part.
+!	global%version='HAWC2MB 12.0'	! 03.09.2014	TJUL		Bug fix, userdefined number of azimuthal stations was not active. Default value of 16 stations were always present until now.
+					! 13.11.2014	GEORG		Buxfix in BEM module, relevant when negative windspeeds occurs
+					! 08.12.2014	TJUL		Update in SNEL 3D profile correction method
+					! 16.12.2014	GEORG		Bugfix of mhh dyn stall model wrt rel velocity
+					! 16.01.2014	TJUL/MHHA/ANMH	Bugfix wrt position of rotor center in aero variables
+					! 10.02.2015	MMPE		Small update in call of output function (if aerodyn rotor not defined)
+					! 20.02.2015	TJUL		Update in BEM "use_mean_average" approach + approach to find load in local BEM grid
+!	global%version='HAWC2MB 12.1'	! 17.03.2015	TJUL		Option to specify dyn stall model manually in the _ae file depending on radial location.
+					! 27.10.2014    CPAV	        TKIM anisotropic beam element added. CPAV damping introduced (the damping matrix is the same than MHH, but it's generalized to support 6x6 stiffness matrix)
+					! 20.03.2015	TJUL		in wind speed module. factor used for ramps etc is also applied on wake deficits and turbulence to prevent negative wind speed in simulation start up.
+					! 20.03.2015	TJUL		Update in output file write updated in order to allow more than 999 sensors
+					! 25.03.2015	TJUL		Bugfix relatede to _ae dyn stall choice from 17.03.2015
+					! 30.04.2015	TJUL		Type2_dll. New option to include "initstring" and "message"
+					! 05.05.2015	TJUL		New option in DWM method (multple_deficit_method) - summation or max deficit operator
+					! 27.05.2015    TJUL    	Update in Mann turbulence dll call. Now the mann_win32.dll and ressource_win32.dll must be present in same folder as HAWC2
+					! 28.05.2015    TJUL        	This version is compiled with intel visual fortran
+!	global%version='HAWC2MB 12.2' 	! 09.07.2015    TJUL        Additional read specification when opening files. To avoid network multiple access errors
+					! 21.07.2015    ALSTA       Compiler flags needed for HAWCStab2 compilation inserted.
+					! 24.07.2015    TJUL        Update in create directories procedure - needed for special situations where the intel version was blocked from creating certain directories.
+					! 24.07.2015    TJUL        Mann turbulence generator call moved from mann
+global%version='HAWC2MB 12.3 (beta)'    ! 26.08.2015    ANMH        Bug fix+ speed improvement. DLL call of external dll's update so it again works with previous complied external systems (version 12.1 and 12.2 issue). Banded matrices used in EOM solving.
+	                                ! 26.08.2015    MMPE        Add-ons for new viulization module
+	                                ! 22.09.2015    TJUL/ANMH   Bug fix wrt concentrated
+	                                ! 13.10.2015    TJUL        Adjustments of export wind field output function, new commands possible.
+	                                ! 05.12.2015    TJUL        HAWC_dll subroutine format. STDCALL declared. Shoul solve issues between external dll's and the intel based hawc2mb
+	                                ! 07.12.2015    TJUL        Update in wake module for 'aislie_18.dll' call. Resolve issues on wine linux.
+	                                ! 09.12.2015    ANMH        Small adjustement of shear center coupling in shape functions.
+	                                ! 09.12.2015    ANMH        Update in dll interface specification for external systems
+	                                ! 14.12.2015    GEPIR       Near wake model implemented
+!                                   	! 12.12.2015    EBRA        F90 renamed, using iso_c_binding, using only dll_utils, inserted linux DEC
+!                                  	! 12.12.2015    EBRA        Non standard things isolated: stat, system, nargs, getarg (New files: filesytem_tools and support_compiler)
+!                                   	! 12.12.2015    EBRA        Adding some DLLS STDCALL (related to  26.08.2015 ANMH: DLL call of external dll's update)
+!                                   	! 12.12.2015    EBRA        Adding Fake Visualization support(related to 26.08.2015 MMPE: Add-ons for new visualization module)
+!                                   	! 26.08.2015    ANMH        Bug fix+ speed improvement. DLL call o										
+!                                   	! 12.12.2015    EBRA        Trunk merged with dev version 12.3w (Incorporating changes since 26.08.2015 into trunk). A dev branch is needed.
+!                                   	! 12.12.2015    EBRA        Renaming files within the numerical library
+	                                ! 14.12.2015    GEPIR       Near wake model implemented
+	                                ! 15.12.2015    tjul        stdcall in ecternal wave call
+	                                ! 17.12.2015    gepir/tjul/ebra Last updates to handle test cases
+	                                ! 21.12.2015    tjul        Test run completed. Differences in hydro test cases is caused by updates in the wkin dll regarding ireg PM waves.
+					
+

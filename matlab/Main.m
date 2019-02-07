@@ -1,11 +1,11 @@
 % =========================================================================
 % Programmed by:                                                          %
-%           Mahmood Mirzaei                                               %
-%           mmir@dtu.dk                                                   %
+%           Wai Hou Lio                                                   %
+%           wali@dtu.dk                                                   %
 %           Department of Wind Energy                                     %
 %           Technical University of Denmark                               %
 %                                                                         %
-% History:  Ver1.0 @                                                      %
+% History:  Ver2.0 @                                                      %
 %                                                                         %
 % License:  << Open Source Research Collaboration >>                      %
 %                                                                         %
@@ -20,18 +20,8 @@ clc; fclose all; clear all; warning off; profile on;beep off;
 %                          Initialization
 % -------------------------------------------------------------------------
 
-global saved_vars Sys_PPF SimParams Controller;
+ global saved_vars Sys_PPF SimParams Controller;
 
-
-global out_saved;
-out_saved = [];
-
-global time_old;
-
-time_old = 0;
-
-global omega_g_saved ;
-omega_g_saved = [];
 
 if ~exist('PI_Controller','file')
     addpath([pwd, '\lib']);
@@ -41,22 +31,13 @@ if ~exist('DTUConrtollerHAWC2','file')
     addpath([pwd, '\DTUController']);
 end
 
-RootDir = pwd;
-
-DTU_PIControllerInit;
+ DTU_PIControllerInit;
 
 % -------------------------------------------------------------------------
 %              Initialization of controller dependent variables
 % -------------------------------------------------------------------------
 
-OutputName = '1';
-LogFileName= OutputName;
-
-
-% Xpid = [0;0];
-% U_old = [0;0];
-time_old = 0;
-time = 0;
+ time = 0;
 
 %%
 
@@ -67,35 +48,13 @@ system('c:\Windows\System32\taskkill.exe /f /im cmd.exe');
 
 % -------------------------------------------------------------------------
 %                       SIMULATION OPTIONS SETUP
-% -------------------------------------------------------------------------
+% ------------------------------------------------------------------------- 
+% % Simulation time options
+ Tstart = 0; % From what time results should be saved
+ Tend = 1000; % Simulation length
+ Ts = 0.01; % Sample time
+ SimParams.Ts = Ts;
 
-% Simulation time options
-Tstart = 0; % From what time results should be saved
-Tend = 500; % Simulation length
-Ts = 0.025; % Sample time
-SimParams.Ts = Ts;
-
-Sys_PPF = c2d(ss(tf(1,[100,1])),Ts);    % Platform pitch filter
-
-
-ControllerType = 'MATCtrl_Type2Acts';
-WTType = 'OnshoreHawc2du10mw';
-OutputName = [ControllerType '_' OutputName '_3'];
-
-
-
-
-%%
-
-TempNameValues = {
-    num2str(Tend);
-    [LogFileName '.log'];
-    [ControllerType '.htc'];
-    OutputName
-    };
-
-
-TurbineModel_replace;
 %%
 
 TCPserverType = 'tcplink_delay';
@@ -109,12 +68,12 @@ TCPportnumber = 1239;
 tic
 
 % Open HAWC2
-cd(['../' WTType ]);
+cd(['../DTU_10_MW_Reference_Wind_Turbine_v_9-1' ]);
 
 if isunix
-    system('wine hawc2MB.exe ./htc/main.htc')
+    system('wine hawc2MB.exe ./htc/DTU_10MW_RWT.htc')
 else
-    !hawc2MB.exe ./htc/main.htc &
+    !hawc2MB.exe ./htc/DTU_10MW_RWT.htc &
 end
 
 cd('../matlab');

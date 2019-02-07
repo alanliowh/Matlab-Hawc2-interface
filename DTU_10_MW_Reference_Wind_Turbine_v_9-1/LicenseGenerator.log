@@ -1,0 +1,31 @@
+License Generator Version: 1.0a2
+License Created by: MIKF
+License Created: 2018-08-21 12:54:31
+
+-------------------------------------------------------------------------------
+INPUT
+-------------------------------------------------------------------------------
+{'H2': True,
+ 'HS2': False,
+ 'add_domain': False,
+ 'add_ipv4s': False,
+ 'add_macs': True,
+ 'comment': 'Extended DTU licenses',
+ 'edic': {'import_mac': 'C:\\Sandbox\\LicenseGenerator\\macs',
+          'load_database': 'C:/Sandbox/LicenseGenerator/LicenseGenerator/Database',
+          'load_databaseH2': 'C:/Sandbox/LicenseGenerator/HAWC2LicenseSource',
+          'load_databaseHS2': 'C:/Sandbox/LicenseGenerator/HAWCStab2LicenseSource',
+          'log_path': 'C:/Sandbox/LicenseGenerator/LicenseGenerator/CompileFolder\\LicenseGenerator.log',
+          'set_MS_build_path': '"C:\\Program Files '
+                               '(x86)\\MSBuild\\14.0\\Bin\\MSBuild.exe"',
+          'set_fp_path_32': 'C:\\lazarus32\\fpc\\3.0.4\\bin\\i386-win32\\fpc.exe',
+          'set_fp_path_64': 'C:/lazarus/fpc/3.0.0/bin/x86_64-win64/fpc.exe',
+          'set_working_folder': 'C:/Sandbox/LicenseGenerator/LicenseGenerator/CompileFolder'},
+ 'license_type': 1,
+ 'overwrite_expiry': '01-01-2020'}
+
+-------------------------------------------------------------------------------
+License Manager Version: 
+-------------------------------------------------------------------------------
+licence_manager.dll was latest releasted in version: (9, 267)
+current licence_manager.dll version: (9, 268)
